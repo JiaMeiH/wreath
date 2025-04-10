@@ -1,4 +1,4 @@
-// ✅ 完整 script.js
+// ✅ 完整 script.js（已統一手機與桌機點擊邏輯）
 
 const petalColorSets = {
   "flower1-template": [
@@ -51,9 +51,7 @@ function isMobile() {
 
 function updateTemplateTip() {
   const tip = document.getElementById("templateTip");
-  tip.textContent = isMobile()
-    ? "👉 點選模板一次切換，再點一次即可新增花朵"
-    : "💡 雙擊模板可新增花朵";
+  tip.textContent = "👉 點選模板一次切換，再點一次即可新增花朵";
 }
 
 function renderColorSwatches(id, inputId, colors) {
@@ -249,13 +247,10 @@ function bindTemplateEvents() {
     el.onclick = () => {
       const isSelected = selectedTemplateId === id;
       selectTemplate(id);
-      if (isMobile() && isSelected) {
+      if (isSelected) {
         addFlower();
       }
     };
-    if (!isMobile()) {
-      el.ondblclick = () => addFlower();
-    }
   });
 }
 

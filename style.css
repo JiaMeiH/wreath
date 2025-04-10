@@ -1,14 +1,17 @@
-/* 選取中的模板邊框 */
+/* 被選取的樣板 */
 .selected {
   outline: 4px solid #ec7b7b;
   border-radius: 8px;
+  cursor: pointer; /* 加入 cursor 保持小手形 */
 }
 
-svg[id$="-template"]:hover {
+/* 只有當不是被選取時，hover 才會套用虛線 */
+svg[id$="-template"]:not(.selected):hover {
   outline: 2px dashed #aaa;
   cursor: pointer;
   border-radius: 8px;
 }
+
 
 /* 花朵清單外框 */
 .flower-list-wrapper {

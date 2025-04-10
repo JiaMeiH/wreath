@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>花圈設計</title>
   <link rel="stylesheet" href="./style.css">
-
 </head>
 <body>
-<!-- partial:index.partial.html -->
+
 <!-- SVG 漸層定義與花型預覽 -->
 <svg width="0" height="0">
   <defs>
@@ -26,9 +25,9 @@
   </defs>
 </svg>
 
+<!-- 模板區 -->
 <div style="display: flex; justify-content: center; gap: 40px;">
-  <svg id="flower1-template" width="150" height="160" viewBox="0 0 160 160"
-       onclick="selectTemplate('flower1-template')" ondblclick="addFlower()">
+  <svg id="flower1-template" width="150" height="160" viewBox="0 0 160 160" onclick="selectTemplate('flower1-template')">
     <g transform="rotate(30, 80, 80)">
       <g transform="translate(80, 80)">
         <ellipse class="petal" rx="20" ry="32" transform="rotate(0) translate(0,-38.4)" />
@@ -42,47 +41,49 @@
     </g>
   </svg>
 
-  <svg id="flower2-template" width="120" height="160" viewBox="0 0 160 160"
-     onclick="selectTemplate('flower2-template')" ondblclick="addFlower()">
-  <g transform="rotate(22.5, 80, 80) translate(80, 80) scale(2.8) translate(-100, -100)">
-    <g transform="translate(100, 100)">
-      <circle class="petal" r="8" transform="rotate(0) translate(0, -21)" />
-      <circle class="petal" r="8" transform="rotate(45) translate(0, -21)" />
-      <circle class="petal" r="8" transform="rotate(90) translate(0, -21)" />
-      <circle class="petal" r="8" transform="rotate(135) translate(0, -21)" />
-      <circle class="petal" r="8" transform="rotate(180) translate(0, -21)" />
-      <circle class="petal" r="8" transform="rotate(225) translate(0, -21)" />
-      <circle class="petal" r="8" transform="rotate(270) translate(0, -21)" />
-      <circle class="petal" r="8" transform="rotate(315) translate(0, -21)" />
+  <svg id="flower2-template" width="120" height="160" viewBox="0 0 160 160" onclick="selectTemplate('flower2-template')">
+    <g transform="rotate(22.5, 80, 80) translate(80, 80) scale(2.8) translate(-100, -100)">
+      <g transform="translate(100, 100)">
+        <circle class="petal" r="8" transform="rotate(0) translate(0, -21)" />
+        <circle class="petal" r="8" transform="rotate(45) translate(0, -21)" />
+        <circle class="petal" r="8" transform="rotate(90) translate(0, -21)" />
+        <circle class="petal" r="8" transform="rotate(135) translate(0, -21)" />
+        <circle class="petal" r="8" transform="rotate(180) translate(0, -21)" />
+        <circle class="petal" r="8" transform="rotate(225) translate(0, -21)" />
+        <circle class="petal" r="8" transform="rotate(270) translate(0, -21)" />
+        <circle class="petal" r="8" transform="rotate(315) translate(0, -21)" />
+      </g>
+      <circle class="center" cx="100" cy="100" r="15" />
     </g>
-    <circle class="center" cx="100" cy="100" r="15" />
-  </g>
-</svg>
-<svg id="flower3-template" width="50" height="160" viewBox="0 0 160 160">
-  <g transform="translate(80, 80) scale(5)">
-    <circle class="petal" r="8" cx="0" cy="-20" />
-    <circle class="petal" r="8" cx="0" cy="20" />
-  </g>
-</svg>
+  </svg>
+
+  <svg id="flower3-template" width="50" height="160" viewBox="0 0 160 160" onclick="selectTemplate('flower3-template')">
+    <g transform="translate(80, 80) scale(5)">
+      <circle class="petal" r="8" cx="0" cy="-20" />
+      <circle class="petal" r="8" cx="0" cy="20" />
+    </g>
+  </svg>
 </div>
+
 <p id="templateTip" class="template-tip"></p>
 
-<!-- 花朵清單與控制區 -->
+<!-- 花朵清單區 -->
 <div class="flower-list-wrapper">
   <div id="flowerList" class="flower-list"></div>
 </div>
 
-
+<!-- 控制按鈕 -->
 <div style="text-align: center; margin-top: 10px;">
   <button class="add-button">🌸 加入花朵</button>
   <button class="clear-button">🧹 清空全部</button>
   <button class="preview-button">🖼 預覽圖片</button>
   <button class="save-button">📥 下載圖片</button>
 </div>
+
+<!-- 預覽區 -->
 <div id="previewArea" style="text-align: center; margin-top: 20px;"></div>
 
-
-<!-- 顏色選擇區 -->
+<!-- 顏色選擇 -->
 <div style="text-align: center; margin-top: 20px;">
   <div class="color-section">
     <p>花瓣顏色</p>
@@ -95,10 +96,11 @@
     <input type="hidden" id="centerColor" />
   </div>
 </div>
-<!-- partial -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'></script>
-  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>    
-  <script  src="./script.js"></script>
+
+<!-- JS 套件與腳本 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script src="./script.js"></script>
 
 </body>
 </html>
