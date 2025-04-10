@@ -243,6 +243,42 @@ function previewFlowers() {
 
 
 
+function isMobile() {
+  return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth <= 768;
+}
+
+
+function bindTemplateEvents() {
+  ["flower1-template", "flower2-template", "flower3-template"].forEach(id => {
+    const el = document.getElementById(id);
+
+    // 通用：點擊選擇模板
+    el.onclick = () => {
+      const isSelected = selectedTemplateId === id;
+
+      selectTemplate(id); // 先選模板
+
+      // ✅ 手機上：若已選中就新增花朵
+      if (isMobile() && isSelected) {
+        addFlower();
+      }
+    };
+
+    // 桌機保留雙擊新增
+    if (!isMobile()) {
+      el.ondblclick = () => addFlower();
+    }
+  });
+}
+function updateTemplateTip() {
+  const tip = document.getElementById("templateTip");
+  if (isMobile()) {
+    tip.textContent = "👉 點選模板一次切換，再點一次即可新增花朵，拖曳清單中花朵可調整順序";
+  } else {
+    tip.textContent = "💡 雙擊模板可新增花朵，拖曳清單中花朵可調整順序";
+  }
+}
+
 window.onload = () => {
   document.getElementById(selectedTemplateId).classList.add("selected");
 
@@ -255,11 +291,12 @@ window.onload = () => {
   }
 
   updatePreviewColors();
-
-  // 👉 啟用拖曳排序
+  updateTemplateTip();
+  bindTemplateEvents(); // ← 加這行綁定事件
   new Sortable(document.getElementById("flowerList"), {
     animation: 150,
     ghostClass: 'drag-ghost'
   });
 };
+
 

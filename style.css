@@ -246,3 +246,51 @@ svg[id$="-template"]:hover {
   pointer-events: none;
   white-space: nowrap;
 }
+.template-tip {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  margin-top: 8px;
+  font-style: italic;
+}
+
+
+@media (max-width: 768px) {
+  /* 放大花朵與刪除按鈕 */
+  .scaled-flower {
+    transform: scale(0.65);
+  }
+
+  .delete-btn {
+    transform: translate(-50%, -50%) scale(0.6);
+  }
+
+  /* 放大色票與選色器 */
+  .color-swatch {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .color-section input[type="color"] {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  /* 按鈕全部改為直式排列 + 寬度撐滿 */
+  .add-button,
+  .clear-button,
+  .save-button,
+  .preview-button {
+    display: block;
+    width: 90%;
+    margin: 10px auto 0 auto;
+    font-size: 16px;
+  }
+
+  /* 提升拖曳區域在手機的可用性 */
+  .flower-list {
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: pan-y;
+  }
+}

@@ -58,26 +58,26 @@
     <circle class="center" cx="100" cy="100" r="15" />
   </g>
 </svg>
-<svg id="flower3-template" width="50" height="160" viewBox="0 0 160 160"
-     onclick="selectTemplate('flower3-template')" ondblclick="addFlower()">
+<svg id="flower3-template" width="50" height="160" viewBox="0 0 160 160">
   <g transform="translate(80, 80) scale(5)">
     <circle class="petal" r="8" cx="0" cy="-20" />
     <circle class="petal" r="8" cx="0" cy="20" />
   </g>
 </svg>
 </div>
+<p id="templateTip" class="template-tip"></p>
+
 <!-- 花朵清單與控制區 -->
 <div class="flower-list-wrapper">
   <div id="flowerList" class="flower-list"></div>
-  <p class="flower-tip"> 點擊🌸兩下或按下方按鈕新增🌸，清單中可拖曳調整花花順序</p>
 </div>
 
 
 <div style="text-align: center; margin-top: 10px;">
-  <button class="add-button" onclick="addFlower()">🌸 加入花朵</button>
-  <button class="clear-button" onclick="clearFlowers()">🧹 清空全部</button>
-  <button class="preview-button" onclick="previewFlowers()">🖼 預覽圖片</button>
-  <button class="save-button" onclick="saveFlowersAsImage()">📥 下載圖片</button>
+  <button class="add-button">🌸 加入花朵</button>
+  <button class="clear-button">🧹 清空全部</button>
+  <button class="preview-button">🖼 預覽圖片</button>
+  <button class="save-button">📥 下載圖片</button>
 </div>
 <div id="previewArea" style="text-align: center; margin-top: 20px;"></div>
 
