@@ -214,6 +214,54 @@ function bindTemplateEvents() {
   });
 }
 
+function addToGarden() {
+  const flowerList = document.getElementById("flowerList");
+  const clone = flowerList.cloneNode(true);
+
+  // 移除 delete 按鈕（如果有）
+  clone.querySelectorAll(".delete-btn").forEach(btn => btn.remove());
+
+  // 複製 defs（漸層用）
+  const defs = document.querySelector("svg defs");
+  if (defs) {
+    const defsClone = defs.cloneNode(true);
+    clone.querySelectorAll("svg").forEach(svg => {
+      const defsCopy = defsClone.cloneNode(true);
+      svg.insertBefore(defsCopy, svg.firstChild);
+    });
+  }
+
+  // 包裝在不可見容器中渲染成圖片
+  const container = document.createElement("div");
+  container.style.position = "fixed";
+  container.style.left = "-9999px";
+  container.style.top = "0";
+  container.style.background = "white";
+  container.appendChild(clone);
+  document.body.appendChild(container);
+
+  html2canvas(clone, {
+    backgroundColor: null,
+    useCORS: true
+  }).then(canvas => {
+    const img = document.createElement("img");
+    img.src = canvas.toDataURL("image/png");
+    img.style.maxWidth = "100%";
+    img.style.height = "auto";
+    img.style.display = "block";
+    img.style.margin = "0 auto";
+
+    // 新增進花圃
+    const gardenWrapper = document.getElementById("gardenWrapper");
+    gardenWrapper.appendChild(img);
+
+    document.body.removeChild(container);
+  });
+}
+
+
+
+
 window.onload = () => {
   document.getElementById(selectedTemplateId).classList.add("selected");
 
@@ -229,11 +277,10 @@ window.onload = () => {
   tip.textContent = isMobile()
     ? "長按拖曳花朵可移動位置・將花朵向上或向下移出清單可刪除"
     : "長按拖曳花朵可移動位置";
-
-  document.querySelector(".add-button").onclick = addFlower;
+  
   document.querySelector(".clear-button").onclick = clearFlowers;
   document.querySelector(".save-button").onclick = saveFlowersAsImage;
-  document.querySelector(".preview-button").onclick = previewFlowers;
+  document.querySelector(".preview-button").onclick = addToGarden;
 
   let dragY = null;
 let pointerMoveHandler = null;
