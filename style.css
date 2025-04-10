@@ -277,7 +277,10 @@ svg[id$="-template"]:not(.selected):hover {
     font-size: 18px;
     padding: 12px 0;
   }
-
+  /* 手機隱藏刪除按鈕 */
+  .delete-btn {
+    display: none !important;
+  }
   /* 色票：加大一點 */
   .color-swatch {
     width: 40px !important;

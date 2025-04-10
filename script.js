@@ -1,53 +1,27 @@
-// ✅ 完整 script.js（已統一手機與桌機點擊邏輯）
-
-const petalColorSets = {
-  "flower1-template": [
-    "#0033CC", "#0099FF", "#C4E1FF", "#FFED97", "#ffff99",
-    "#DCB5FF", "#ff0000", "#FFC1E0", "#ffcccc", "#aed581",
-    "#CCFF99", "#f2f2f2", "#4d4d4d"
-  ],
-  "flower2-template": [
-    "#f2f2f2", "url(#goldGradient)", "url(#silverGradient)"
-  ],
-  "flower3-template": [
-    "url(#goldGradient)", "url(#silverGradient)"
-  ]
-};
-
-const centerColorSets = {
-  "flower1-template": [
-    "#0033CC", "#0099FF", "#C4E1FF", "#FFED97", "#ffff99",
-    "#DCB5FF", "#ff0000", "#FFC1E0", "#ffcccc", "#aed581",
-    "#CCFF99", "#f2f2f2", "#4d4d4d", "url(#goldGradient)", "url(#silverGradient)"
-  ],
-  "flower2-template": [
-    "#f2f2f2", "#ff0000", "#0099FF", "rgb(186, 93, 214)"
-  ],
-  "flower3-template": [
-    "url(#goldGradient)", "url(#silverGradient)"
-  ]
-};
-
-const flowerColors = {
-  "flower1-template": {
-    petalColor: "#DCB5FF",
-    centerColor: "#f2f2f2"
-  },
-  "flower2-template": {
-    petalColor: "#f2f2f2",
-    centerColor: "#0099FF"
-  },
-  "flower3-template": {
-    petalColor: "url(#goldGradient)",
-    centerColor: "url(#goldGradient)"
-  }
-};
-
-let selectedTemplateId = "flower1-template";
-
 function isMobile() {
   return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth <= 768;
 }
+console.log("是否是手機：", isMobile());
+
+const petalColorSets = {
+  "flower1-template": ["#0033CC", "#0099FF", "#C4E1FF", "#FFED97", "#ffff99", "#DCB5FF", "#ff0000", "#FFC1E0", "#ffcccc", "#aed581", "#CCFF99", "#f2f2f2", "#4d4d4d"],
+  "flower2-template": ["#f2f2f2", "url(#goldGradient)", "url(#silverGradient)"],
+  "flower3-template": ["url(#goldGradient)", "url(#silverGradient)"]
+};
+
+const centerColorSets = {
+  "flower1-template": ["#0033CC", "#0099FF", "#C4E1FF", "#FFED97", "#ffff99", "#DCB5FF", "#ff0000", "#FFC1E0", "#ffcccc", "#aed581", "#CCFF99", "#f2f2f2", "#4d4d4d", "url(#goldGradient)", "url(#silverGradient)"],
+  "flower2-template": ["#f2f2f2", "#ff0000", "#0099FF", "rgb(186, 93, 214)"],
+  "flower3-template": ["url(#goldGradient)", "url(#silverGradient)"]
+};
+
+const flowerColors = {
+  "flower1-template": { petalColor: "#DCB5FF", centerColor: "#f2f2f2" },
+  "flower2-template": { petalColor: "#f2f2f2", centerColor: "#0099FF" },
+  "flower3-template": { petalColor: "url(#goldGradient)", centerColor: "url(#goldGradient)" }
+};
+
+let selectedTemplateId = "flower1-template";
 
 function updateTemplateTip() {
   const tip = document.getElementById("templateTip");
@@ -146,18 +120,12 @@ function addFlower() {
   scaled.appendChild(clone);
   wrapper.appendChild(scaled);
 
-  const delBtn = document.createElement("button");
-  delBtn.className = "delete-btn";
-  delBtn.innerHTML = "🗑";
-  delBtn.onclick = () => wrapper.remove();
-  wrapper.appendChild(delBtn);
-
-  if (isMobile()) {
-    wrapper.onclick = (e) => {
-      e.stopPropagation();
-      document.querySelectorAll(".flower-item").forEach(f => f.classList.remove("show-delete"));
-      wrapper.classList.add("show-delete");
-    };
+  if (!isMobile()) {
+    const delBtn = document.createElement("button");
+    delBtn.className = "delete-btn";
+    delBtn.innerHTML = "🗑";
+    delBtn.onclick = () => wrapper.remove();
+    wrapper.appendChild(delBtn);
   }
 
   document.getElementById("flowerList").appendChild(wrapper);
@@ -170,11 +138,7 @@ function clearFlowers() {
 function saveFlowersAsImage() {
   const original = document.getElementById("flowerList");
   const clone = original.cloneNode(true);
-
-  clone.querySelectorAll(".flower-item").forEach(item => {
-    const btn = item.querySelector(".delete-btn");
-    if (btn) btn.remove();
-  });
+  clone.querySelectorAll(".flower-item .delete-btn").forEach(btn => btn.remove());
 
   const defs = document.querySelector("svg defs");
   if (defs) {
@@ -208,11 +172,7 @@ function saveFlowersAsImage() {
 function previewFlowers() {
   const original = document.getElementById("flowerList");
   const clone = original.cloneNode(true);
-
-  clone.querySelectorAll(".flower-item").forEach(item => {
-    const btn = item.querySelector(".delete-btn");
-    if (btn) btn.remove();
-  });
+  clone.querySelectorAll(".flower-item .delete-btn").forEach(btn => btn.remove());
 
   const defs = document.querySelector("svg defs");
   if (defs) {
@@ -271,10 +231,49 @@ window.onload = () => {
   document.querySelector(".save-button").onclick = saveFlowersAsImage;
   document.querySelector(".preview-button").onclick = previewFlowers;
 
-  new Sortable(document.getElementById("flowerList"), {
-    animation: 150,
-    ghostClass: 'drag-ghost'
-  });
+  let dragY = null;
+let pointerMoveHandler = null;
+
+new Sortable(document.getElementById("flowerList"), {
+  animation: 150,
+  ghostClass: 'drag-ghost',
+
+  onChoose: () => {
+    if (!isMobile()) return;
+
+    pointerMoveHandler = (e) => {
+      dragY = e.touches ? e.touches[0].clientY : e.clientY;
+    };
+    window.addEventListener("pointermove", pointerMoveHandler, { passive: true });
+  },
+
+  onEnd: (evt) => {
+    if (!isMobile()) return;
+
+    window.removeEventListener("pointermove", pointerMoveHandler);
+    pointerMoveHandler = null;
+
+    const wrapper = document.querySelector(".flower-list-wrapper");
+    const wrapperRect = wrapper.getBoundingClientRect();
+    const buffer = 20;
+
+    console.log("🎯 拖曳結束 Y =", dragY, "wrapper top=", wrapperRect.top, "bottom=", wrapperRect.bottom);
+
+    if (dragY !== null && (
+      dragY < wrapperRect.top - buffer ||
+      dragY > wrapperRect.bottom + buffer
+    )) {
+      console.log("🗑 拖曳超出上下範圍，刪除花朵");
+      evt.item.remove();
+    } else {
+      console.log("✅ 拖曳未超出範圍，保留花朵");
+    }
+
+    dragY = null;
+  }
+});
+
+  
 
   document.body.addEventListener("click", () => {
     document.querySelectorAll(".flower-item").forEach(f => f.classList.remove("show-delete"));
