@@ -225,6 +225,10 @@ window.onload = () => {
   updatePreviewColors();
   updateTemplateTip();
   bindTemplateEvents();
+  const tip = document.getElementById("flowerTip");
+  tip.textContent = isMobile()
+    ? "長按拖曳花朵可移動位置・將花朵向上或向下移出清單可刪除"
+    : "長按拖曳花朵可移動位置";
 
   document.querySelector(".add-button").onclick = addFlower;
   document.querySelector(".clear-button").onclick = clearFlowers;
