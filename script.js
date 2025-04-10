@@ -254,7 +254,12 @@ function addToGarden() {
     // 新增進花圃
     const gardenWrapper = document.getElementById("gardenWrapper");
     gardenWrapper.appendChild(img);
-
+    img.onclick = () => {
+      if (confirm("要刪除這個花圈圖片嗎？")) {
+        img.remove();
+      }
+    };
+    
     document.body.removeChild(container);
   });
 }
@@ -324,7 +329,48 @@ new Sortable(document.getElementById("flowerList"), {
   }
 });
 
-  
+document.querySelector(".combine-button").onclick = async () => {
+  const images = document.querySelectorAll("#gardenWrapper img");
+  if (images.length === 0) {
+    alert("目前花圃沒有圖片");
+    return;
+  }
+
+  // 取得圖片實體
+  const loadedImgs = await Promise.all(
+    Array.from(images).map(img => {
+      return new Promise(resolve => {
+        const temp = new Image();
+        temp.crossOrigin = "anonymous";
+        temp.onload = () => resolve(temp);
+        temp.src = img.src;
+      });
+    })
+  );
+
+  // 計算畫布寬高（以最大寬、總高為準）
+  const maxWidth = Math.max(...loadedImgs.map(img => img.width));
+  const totalHeight = loadedImgs.reduce((sum, img) => sum + img.height, 0);
+
+  const canvas = document.createElement("canvas");
+  canvas.width = maxWidth;
+  canvas.height = totalHeight;
+  const ctx = canvas.getContext("2d");
+
+  // 每張圖片往下堆疊
+  let y = 0;
+  loadedImgs.forEach(img => {
+    ctx.drawImage(img, 0, y);
+    y += img.height;
+  });
+
+  // 輸出下載
+  const link = document.createElement("a");
+  link.download = "combined-flower-garden.png";
+  link.href = canvas.toDataURL("image/png");
+  link.click();
+};
+
 
   document.body.addEventListener("click", () => {
     document.querySelectorAll(".flower-item").forEach(f => f.classList.remove("show-delete"));

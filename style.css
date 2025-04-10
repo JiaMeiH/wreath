@@ -249,6 +249,35 @@ svg[id$="-template"]:not(.selected):hover {
   transform: translateY(-2px);
 }
 
+.combine-button {
+  display: inline-block;
+  margin-top: 20px;
+  margin-left: 10px;
+  padding: 10px 24px;
+  font-size: 18px;
+  color: #3e3e3e;
+  background-color: #E0D4C3;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.combine-button:hover {
+  background-color: #c9b8a4;
+  transform: translateY(-2px);
+}
+
+#gardenWrapper img {
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+#gardenWrapper img:hover {
+  opacity: 0.75;
+}
+
+
 .drag-ghost {
   opacity: 0.5;
   transform: scale(1.05);
