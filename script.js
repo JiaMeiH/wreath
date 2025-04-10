@@ -24,12 +24,12 @@ const centerColorSets = {
 
 const flowerColors = {
   "flower1-template": {
-    petalColor: " #ff69b4",
-    centerColor: " #ffcc00"
+    petalColor: " #DCB5FF",
+    centerColor: " #f2f2f2"
   },
   "flower2-template": {
-    petalColor: " #4db6ac",
-    centerColor: " #dce775"
+    petalColor: " #f2f2f2",
+    centerColor: " #0099FF"
   },
   "flower3-template": {
     petalColor: "url(#goldGradient)",
@@ -42,9 +42,16 @@ let selectedTemplateId = "flower1-template";
 function renderColorSwatches(id, inputId, colors) {
   const container = document.getElementById(id);
   container.innerHTML = "";
-  const current =
+  let current =
     document.getElementById(inputId).getAttribute("data-fill") ||
     document.getElementById(inputId).value;
+
+  // 若目前顏色未設（空字串），就預設選第一個
+  if (!current && colors.length > 0) {
+    current = colors[0];
+    setColor(inputId, current); // 設定並更新狀態
+  }
+
   colors.forEach((color) => {
     const swatch = document.createElement("div");
     swatch.className = "color-swatch";
@@ -80,25 +87,33 @@ function setColor(inputId, color) {
 function selectTemplate(id) {
   selectedTemplateId = id;
 
-  // 更新選取樣式
+  // 移除舊的選取樣式
   ["flower1-template", "flower2-template", "flower3-template"].forEach(tid =>
-    document.getElementById(tid).classList.remove('selected')
+    document.getElementById(tid).classList.remove("selected")
   );
   document.getElementById(id).classList.add("selected");
 
-  // 更新顏色選擇
-  renderColorSwatches("petalSwatches", "petalColor", petalColorSets[selectedTemplateId]);
+  // 設定顏色為 flowerColors 的預設值
+  const petal = flowerColors[id].petalColor;
+  const center = flowerColors[id].centerColor;
 
+  setColor("petalColor", petal);
+  if (id !== "flower3-template") {
+    setColor("centerColor", center);
+  }
+
+  // 顯示/隱藏花蕊選項
   const centerSection = document.querySelector('.color-section:nth-of-type(2)');
-  if (selectedTemplateId === "flower3-template") {
+  if (id === "flower3-template") {
     centerSection.style.display = "none";
   } else {
     centerSection.style.display = "inline-block";
-    renderColorSwatches("centerSwatches", "centerColor", centerColorSets[selectedTemplateId]);
   }
 
   updatePreviewColors();
 }
+
+
 
 function updatePreviewColors() {
   Object.keys(flowerColors).forEach((id) => {
@@ -230,7 +245,14 @@ function previewFlowers() {
 
 window.onload = () => {
   document.getElementById(selectedTemplateId).classList.add("selected");
-  renderColorSwatches("petalSwatches", "petalColor", petalColorSets[selectedTemplateId]);
-  renderColorSwatches("centerSwatches", "centerColor", centerColorSets[selectedTemplateId]);
+
+  const petal = flowerColors[selectedTemplateId].petalColor;
+  const center = flowerColors[selectedTemplateId].centerColor;
+
+  setColor("petalColor", petal);
+  if (selectedTemplateId !== "flower3-template") {
+    setColor("centerColor", center);
+  }
+
   updatePreviewColors();
 };
