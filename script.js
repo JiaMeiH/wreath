@@ -1,3 +1,5 @@
+// ✅ 完整 script.js
+
 const petalColorSets = {
   "flower1-template": [
     "#0033CC", "#0099FF", "#C4E1FF", "#FFED97", "#ffff99",
@@ -152,6 +154,14 @@ function addFlower() {
   delBtn.onclick = () => wrapper.remove();
   wrapper.appendChild(delBtn);
 
+  if (isMobile()) {
+    wrapper.onclick = (e) => {
+      e.stopPropagation();
+      document.querySelectorAll(".flower-item").forEach(f => f.classList.remove("show-delete"));
+      wrapper.classList.add("show-delete");
+    };
+  }
+
   document.getElementById("flowerList").appendChild(wrapper);
 }
 
@@ -269,5 +279,9 @@ window.onload = () => {
   new Sortable(document.getElementById("flowerList"), {
     animation: 150,
     ghostClass: 'drag-ghost'
+  });
+
+  document.body.addEventListener("click", () => {
+    document.querySelectorAll(".flower-item").forEach(f => f.classList.remove("show-delete"));
   });
 };

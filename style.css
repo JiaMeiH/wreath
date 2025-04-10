@@ -113,9 +113,16 @@ svg[id$="-template"]:hover {
   z-index: 1;
 }
 
+/* 桌機 hover 時顯示 */
 .flower-item:hover .delete-btn {
   display: block;
 }
+
+/* 手機點擊時加上 .show-delete 類別可顯示 */
+.flower-item.show-delete .delete-btn {
+  display: block;
+}
+
 
 /* 色票格 */
 .color-swatch {
