@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>花圈設計</title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!-- SVG 漸層定義與花型預覽 -->
+<svg width="0" height="0">
+  <defs>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff8dc" />
+      <stop offset="30%" stop-color="#ffd700" />
+      <stop offset="60%" stop-color="#b8860b" />
+      <stop offset="100%" stop-color="#fff8dc" />
+    </linearGradient>
+    <linearGradient id="silverGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="30%" stop-color="#dcdcdc" />
+      <stop offset="60%" stop-color="#a9a9a9" />
+      <stop offset="100%" stop-color="#ffffff" />
+    </linearGradient>
+  </defs>
+</svg>
+
+<div style="display: flex; justify-content: center; gap: 40px;">
+  <svg id="flower1-template" width="150" height="160" viewBox="0 0 160 160"
+       onclick="selectTemplate('flower1-template')" ondblclick="addFlower()">
+    <g transform="rotate(30, 80, 80)">
+      <g transform="translate(80, 80)">
+        <ellipse class="petal" rx="20" ry="32" transform="rotate(0) translate(0,-38.4)" />
+        <ellipse class="petal" rx="20" ry="32" transform="rotate(60) translate(0,-38.4)" />
+        <ellipse class="petal" rx="20" ry="32" transform="rotate(120) translate(0,-38.4)" />
+        <ellipse class="petal" rx="20" ry="32" transform="rotate(180) translate(0,-38.4)" />
+        <ellipse class="petal" rx="20" ry="32" transform="rotate(240) translate(0,-38.4)" />
+        <ellipse class="petal" rx="20" ry="32" transform="rotate(300) translate(0,-38.4)" />
+      </g>
+      <circle class="center" cx="80" cy="80" r="20" />
+    </g>
+  </svg>
+
+  <svg id="flower2-template" width="120" height="160" viewBox="0 0 160 160"
+     onclick="selectTemplate('flower2-template')" ondblclick="addFlower()">
+  <g transform="rotate(22.5, 80, 80) translate(80, 80) scale(2.8) translate(-100, -100)">
+    <g transform="translate(100, 100)">
+      <circle class="petal" r="8" transform="rotate(0) translate(0, -21)" />
+      <circle class="petal" r="8" transform="rotate(45) translate(0, -21)" />
+      <circle class="petal" r="8" transform="rotate(90) translate(0, -21)" />
+      <circle class="petal" r="8" transform="rotate(135) translate(0, -21)" />
+      <circle class="petal" r="8" transform="rotate(180) translate(0, -21)" />
+      <circle class="petal" r="8" transform="rotate(225) translate(0, -21)" />
+      <circle class="petal" r="8" transform="rotate(270) translate(0, -21)" />
+      <circle class="petal" r="8" transform="rotate(315) translate(0, -21)" />
+    </g>
+    <circle class="center" cx="100" cy="100" r="15" />
+  </g>
+</svg>
+<svg id="flower3-template" width="50" height="160" viewBox="0 0 160 160"
+     onclick="selectTemplate('flower3-template')" ondblclick="addFlower()">
+  <g transform="translate(80, 80) scale(5)">
+    <circle class="petal" r="8" cx="0" cy="-20" />
+    <circle class="petal" r="8" cx="0" cy="20" />
+  </g>
+</svg>
+</div>
+<!-- 花朵清單與控制區 -->
+<div class="flower-list-wrapper">
+  <div id="flowerList" class="flower-list"></div>
+</div>
+
+<div style="text-align: center; margin-top: 10px;">
+  <button class="add-button" onclick="addFlower()">➕ 加入花朵</button>
+  <button class="add-button" onclick="clearFlowers()">🧹 清空全部</button>
+  <button class="save-button" onclick="saveFlowersAsImage()">下載圖片</button>
+  <button class="preview-button" onclick="previewFlowers()">🖼 預覽圖片</button>
+
+<div id="previewArea" style="text-align: center; margin-top: 20px;"></div>
+
+</div>
+
+<!-- 顏色選擇區 -->
+<div style="text-align: center; margin-top: 20px;">
+  <div class="color-section">
+    <p>花瓣顏色</p>
+    <div id="petalSwatches"></div>
+    <input type="hidden" id="petalColor" />
+  </div>
+  <div class="color-section">
+    <p>花心顏色</p>
+    <div id="centerSwatches"></div>
+    <input type="hidden" id="centerColor" />
+  </div>
+</div>
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'></script><script  src="./script.js"></script>
+
+</body>
+</html>
