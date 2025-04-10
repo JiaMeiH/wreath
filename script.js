@@ -1,9 +1,11 @@
 const petalColorSets = {
   "flower1-template": [
-    " #0033CC"," #0099FF", " #C4E1FF", "	#FFED97"," #ffff99", " #DCB5FF", " #ff0000", " #FFC1E0"," #ffcccc"," #aed581", " #CCFF99"," #f2f2f2"," #4d4d4d"
+    "#0033CC", "#0099FF", "#C4E1FF", "#FFED97", "#ffff99",
+    "#DCB5FF", "#ff0000", "#FFC1E0", "#ffcccc", "#aed581",
+    "#CCFF99", "#f2f2f2", "#4d4d4d"
   ],
   "flower2-template": [
-    " #f2f2f2", "url(#goldGradient)", "url(#silverGradient)"
+    "#f2f2f2", "url(#goldGradient)", "url(#silverGradient)"
   ],
   "flower3-template": [
     "url(#goldGradient)", "url(#silverGradient)"
@@ -12,10 +14,12 @@ const petalColorSets = {
 
 const centerColorSets = {
   "flower1-template": [
-    " #0033CC"," #0099FF", " #C4E1FF", "	#FFED97"," #ffff99", " #DCB5FF", " #ff0000", " #FFC1E0"," #ffcccc"," #aed581", " #CCFF99"," #f2f2f2"," #4d4d4d", "url(#goldGradient)", "url(#silverGradient)"
+    "#0033CC", "#0099FF", "#C4E1FF", "#FFED97", "#ffff99",
+    "#DCB5FF", "#ff0000", "#FFC1E0", "#ffcccc", "#aed581",
+    "#CCFF99", "#f2f2f2", "#4d4d4d", "url(#goldGradient)", "url(#silverGradient)"
   ],
   "flower2-template": [
-    " #f2f2f2"," #ff0000"," #0099FF", "rgb(186, 93, 214)"
+    "#f2f2f2", "#ff0000", "#0099FF", "rgb(186, 93, 214)"
   ],
   "flower3-template": [
     "url(#goldGradient)", "url(#silverGradient)"
@@ -24,12 +28,12 @@ const centerColorSets = {
 
 const flowerColors = {
   "flower1-template": {
-    petalColor: " #DCB5FF",
-    centerColor: " #f2f2f2"
+    petalColor: "#DCB5FF",
+    centerColor: "#f2f2f2"
   },
   "flower2-template": {
-    petalColor: " #f2f2f2",
-    centerColor: " #0099FF"
+    petalColor: "#f2f2f2",
+    centerColor: "#0099FF"
   },
   "flower3-template": {
     petalColor: "url(#goldGradient)",
@@ -39,6 +43,17 @@ const flowerColors = {
 
 let selectedTemplateId = "flower1-template";
 
+function isMobile() {
+  return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth <= 768;
+}
+
+function updateTemplateTip() {
+  const tip = document.getElementById("templateTip");
+  tip.textContent = isMobile()
+    ? "👉 點選模板一次切換，再點一次即可新增花朵"
+    : "💡 雙擊模板可新增花朵";
+}
+
 function renderColorSwatches(id, inputId, colors) {
   const container = document.getElementById(id);
   container.innerHTML = "";
@@ -46,10 +61,9 @@ function renderColorSwatches(id, inputId, colors) {
     document.getElementById(inputId).getAttribute("data-fill") ||
     document.getElementById(inputId).value;
 
-  // 若目前顏色未設（空字串），就預設選第一個
   if (!current && colors.length > 0) {
     current = colors[0];
-    setColor(inputId, current); // 設定並更新狀態
+    setColor(inputId, current);
   }
 
   colors.forEach((color) => {
@@ -87,44 +101,28 @@ function setColor(inputId, color) {
 function selectTemplate(id) {
   selectedTemplateId = id;
 
-  // 移除舊的選取樣式
   ["flower1-template", "flower2-template", "flower3-template"].forEach(tid =>
     document.getElementById(tid).classList.remove("selected")
   );
   document.getElementById(id).classList.add("selected");
 
-  // 設定顏色為 flowerColors 的預設值
-  const petal = flowerColors[id].petalColor;
-  const center = flowerColors[id].centerColor;
-
-  setColor("petalColor", petal);
+  setColor("petalColor", flowerColors[id].petalColor);
   if (id !== "flower3-template") {
-    setColor("centerColor", center);
+    setColor("centerColor", flowerColors[id].centerColor);
   }
 
-  // 顯示/隱藏花蕊選項
   const centerSection = document.querySelector('.color-section:nth-of-type(2)');
-  if (id === "flower3-template") {
-    centerSection.style.display = "none";
-  } else {
-    centerSection.style.display = "inline-block";
-  }
+  centerSection.style.display = id === "flower3-template" ? "none" : "inline-block";
 
   updatePreviewColors();
 }
-
-
 
 function updatePreviewColors() {
   Object.keys(flowerColors).forEach((id) => {
     const petalColor = flowerColors[id].petalColor;
     const centerColor = flowerColors[id].centerColor;
-    document
-      .querySelectorAll(`#${id} .petal`)
-      .forEach((p) => p.setAttribute("fill", petalColor));
-    document
-      .querySelectorAll(`#${id} .center`)
-      .forEach((c) => c.setAttribute("fill", centerColor));
+    document.querySelectorAll(`#${id} .petal`).forEach((p) => p.setAttribute("fill", petalColor));
+    document.querySelectorAll(`#${id} .center`).forEach((c) => c.setAttribute("fill", centerColor));
   });
 }
 
@@ -165,13 +163,11 @@ function saveFlowersAsImage() {
   const original = document.getElementById("flowerList");
   const clone = original.cloneNode(true);
 
-  // 移除按鈕但保留原樣（保留縮放比例，確保顯示一致）
   clone.querySelectorAll(".flower-item").forEach(item => {
     const btn = item.querySelector(".delete-btn");
     if (btn) btn.remove();
   });
 
-  // 將 defs 複製進 clone 的每一個 svg 裡
   const defs = document.querySelector("svg defs");
   if (defs) {
     const defsClone = defs.cloneNode(true);
@@ -181,12 +177,11 @@ function saveFlowersAsImage() {
     });
   }
 
-  // 建立隱藏容器來渲染圖片
   const container = document.createElement("div");
   container.style.position = "fixed";
   container.style.left = "-9999px";
   container.style.top = "0";
-  container.style.background = "white"; // 或 transparent
+  container.style.background = "white";
   container.appendChild(clone);
   document.body.appendChild(container);
 
@@ -206,13 +201,11 @@ function previewFlowers() {
   const original = document.getElementById("flowerList");
   const clone = original.cloneNode(true);
 
-  // 移除刪除按鈕
   clone.querySelectorAll(".flower-item").forEach(item => {
     const btn = item.querySelector(".delete-btn");
     if (btn) btn.remove();
   });
 
-  // 加上 defs 給每個 svg
   const defs = document.querySelector("svg defs");
   if (defs) {
     const defsClone = defs.cloneNode(true);
@@ -222,7 +215,6 @@ function previewFlowers() {
     });
   }
 
-  // 建立離畫面外的容器
   const container = document.createElement("div");
   container.style.position = "fixed";
   container.style.left = "-9999px";
@@ -235,68 +227,47 @@ function previewFlowers() {
     useCORS: true
   }).then(canvas => {
     const previewArea = document.getElementById("previewArea");
-    previewArea.innerHTML = ""; // 清空先前預覽
+    previewArea.innerHTML = "";
     previewArea.appendChild(canvas);
     document.body.removeChild(container);
   });
 }
 
-
-
-function isMobile() {
-  return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth <= 768;
-}
-
-
 function bindTemplateEvents() {
   ["flower1-template", "flower2-template", "flower3-template"].forEach(id => {
     const el = document.getElementById(id);
-
-    // 通用：點擊選擇模板
     el.onclick = () => {
       const isSelected = selectedTemplateId === id;
-
-      selectTemplate(id); // 先選模板
-
-      // ✅ 手機上：若已選中就新增花朵
+      selectTemplate(id);
       if (isMobile() && isSelected) {
         addFlower();
       }
     };
-
-    // 桌機保留雙擊新增
     if (!isMobile()) {
       el.ondblclick = () => addFlower();
     }
   });
 }
-function updateTemplateTip() {
-  const tip = document.getElementById("templateTip");
-  if (isMobile()) {
-    tip.textContent = "👉 點選模板一次切換，再點一次即可新增花朵，拖曳清單中花朵可調整順序";
-  } else {
-    tip.textContent = "💡 雙擊模板可新增花朵，拖曳清單中花朵可調整順序";
-  }
-}
 
 window.onload = () => {
   document.getElementById(selectedTemplateId).classList.add("selected");
 
-  const petal = flowerColors[selectedTemplateId].petalColor;
-  const center = flowerColors[selectedTemplateId].centerColor;
-
-  setColor("petalColor", petal);
+  setColor("petalColor", flowerColors[selectedTemplateId].petalColor);
   if (selectedTemplateId !== "flower3-template") {
-    setColor("centerColor", center);
+    setColor("centerColor", flowerColors[selectedTemplateId].centerColor);
   }
 
   updatePreviewColors();
   updateTemplateTip();
-  bindTemplateEvents(); // ← 加這行綁定事件
+  bindTemplateEvents();
+
+  document.querySelector(".add-button").onclick = addFlower;
+  document.querySelector(".clear-button").onclick = clearFlowers;
+  document.querySelector(".save-button").onclick = saveFlowersAsImage;
+  document.querySelector(".preview-button").onclick = previewFlowers;
+
   new Sortable(document.getElementById("flowerList"), {
     animation: 150,
     ghostClass: 'drag-ghost'
   });
 };
-
-
