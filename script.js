@@ -255,4 +255,11 @@ window.onload = () => {
   }
 
   updatePreviewColors();
+
+  // 👉 啟用拖曳排序
+  new Sortable(document.getElementById("flowerList"), {
+    animation: 150,
+    ghostClass: 'drag-ghost'
+  });
 };
+

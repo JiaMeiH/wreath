@@ -12,9 +12,11 @@ svg[id$="-template"]:hover {
 
 /* 花朵清單外框 */
 .flower-list-wrapper {
+  position: relative;
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 8px;
+  padding-bottom: 28px; /* 預留給提示文字 */
   margin: 12px 16px;
   background-color: #fdfdfd;
   overflow-x: auto;
@@ -226,4 +228,21 @@ svg[id$="-template"]:hover {
 .preview-button:hover {
   background-color: #97676d;
   transform: translateY(-2px);
+}
+
+.drag-ghost {
+  opacity: 0.5;
+  transform: scale(1.05);
+  transition: transform 0.2s;
+}
+.flower-tip {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  color: #888;
+  font-style: italic;
+  pointer-events: none;
+  white-space: nowrap;
 }
